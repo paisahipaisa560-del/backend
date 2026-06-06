@@ -75,7 +75,17 @@ const gameEngine = new GameEngine();
 gameEngine.setIO(io);
 app.locals.gameEngine = gameEngine;
 
-query('SELECT speed FROM game_settings LIMIT 1').then(result => {
+query(`
+  CREATE TABLE IF NOT EXISTS game_settings (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    speed DECIMAL(10,4) NOT NULL DEFAULT 0.06,
+    CHECK (id = 1)
+  )
+`).then(() => {
+  return query('INSERT INTO game_settings (id, speed) VALUES (1, 0.06) ON CONFLICT (id) DO NOTHING');
+}).then(() => {
+  return query('SELECT speed FROM game_settings LIMIT 1');
+}).then(result => {
   if (result.rows.length > 0) {
     const dbSpeed = parseFloat(result.rows[0].speed);
     if (!isNaN(dbSpeed) && dbSpeed >= 0) {
@@ -83,7 +93,7 @@ query('SELECT speed FROM game_settings LIMIT 1').then(result => {
       console.log(`Game speed loaded from DB: ${dbSpeed}`);
     }
   }
-}).catch(err => console.error('Failed to load game speed from DB:', err));
+}).catch(err => console.error('Game settings init error:', err.message));
 
 gameEngine.startLoop();
 
