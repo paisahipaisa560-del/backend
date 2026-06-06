@@ -12,7 +12,7 @@ const validateRegister = (req, res, next) => {
 
 const validateDeposit = (req, res, next) => {
   const { amount } = req.body;
-  if (!amount || amount <= 0) return res.status(400).json({ success: false, message: 'Invalid deposit amount' });
+  if (!amount || amount < 100) return res.status(400).json({ success: false, message: 'Minimum deposit is ₹100' });
   if (amount > 1000000) return res.status(400).json({ success: false, message: 'Maximum deposit is 10,00,000' });
   next();
 };
