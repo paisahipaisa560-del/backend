@@ -29,7 +29,7 @@ const validateWithdraw = (req, res, next) => {
 
 const validateGameBet = (req, res, next) => {
   const { amount } = req.body;
-  if (!amount || amount < 100) return res.status(400).json({ success: false, message: 'Minimum bet is ₹100' });
+  if (!amount || amount < 10) return res.status(400).json({ success: false, message: 'Minimum bet is ₹10' });
   if (amount > 100000) return res.status(400).json({ success: false, message: 'Maximum bet is ₹1,00,000' });
   next();
 };

@@ -179,4 +179,17 @@ const updateGameSettings = async (req, res) => {
   }
 };
 
-module.exports = { login, getDashboard, getUsers, banUser, editBalance, getPaymentSettings, updatePaymentSettings, updateReferralBonus, getGameSettings, updateGameSettings };
+const updateSupport = async (req, res) => {
+  try {
+    const { telegram, whatsapp } = req.body;
+    await query(
+      'INSERT INTO support_settings (id, telegram, whatsapp) VALUES (1, $1, $2) ON CONFLICT (id) DO UPDATE SET telegram = EXCLUDED.telegram, whatsapp = EXCLUDED.whatsapp',
+      [telegram || '', whatsapp || '']
+    );
+    res.json({ success: true, message: 'Support settings updated' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Failed to update support settings' });
+  }
+};
+
+module.exports = { login, getDashboard, getUsers, banUser, editBalance, getPaymentSettings, updatePaymentSettings, updateReferralBonus, getGameSettings, updateGameSettings, updateSupport };

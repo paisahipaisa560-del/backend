@@ -14,6 +14,7 @@ const gameRoutes = require('./routes/gameRoutes');
 const referralRoutes = require('./routes/referralRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const supportRoutes = require('./routes/supportRoutes');
 const { GameEngine } = require('./utils/gameEngine');
 const { query } = require('./config/database');
 
@@ -53,6 +54,7 @@ app.use('/api/game', gameRoutes);
 app.use('/api/referral', referralRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/support', supportRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running', timestamp: new Date().toISOString() });

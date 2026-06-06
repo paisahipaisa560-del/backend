@@ -140,6 +140,20 @@ const createTables = async () => {
       ON CONFLICT (id) DO NOTHING;
     `);
 
+    await query(`
+      CREATE TABLE IF NOT EXISTS support_settings (
+        id INTEGER PRIMARY KEY DEFAULT 1,
+        telegram VARCHAR(255),
+        whatsapp VARCHAR(255),
+        CHECK (id = 1)
+      );
+    `);
+
+    await query(`
+      INSERT INTO support_settings (id, telegram, whatsapp) VALUES (1, '', '')
+      ON CONFLICT (id) DO NOTHING;
+    `);
+
     await query(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);`);
     await query(`CREATE INDEX IF NOT EXISTS idx_users_mobile ON users(mobile);`);
     await query(`CREATE INDEX IF NOT EXISTS idx_users_referral_code ON users(referral_code);`);
