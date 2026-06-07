@@ -151,7 +151,8 @@ class GameEngine {
       this.totalPayoutAmount *= 0.5;
     }
 
-    const userResult = await query('SELECT balance FROM users WHERE id = $1', [bet.userId]);
+    try {
+      const userResult = await query('SELECT balance FROM users WHERE id = $1', [bet.userId]);
       const oldBalance = parseFloat(userResult.rows[0].balance);
       const newBalance = oldBalance + payout;
 
